@@ -1,0 +1,21 @@
+{
+  "name": "styled-system-izer",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "bin": {
+    "styled-system-izer": "./index.js"
+  },
+  "scripts": {
+    "scaffold": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Ren Rizzolo",
+  "license": "ISC",
+  "dependencies": {
+    "chalk": "^3.0.0",
+    "commander": "^4.1.0",
+    "fs-extra": "^8.1.0",
+    "inquirer": "^7.0.4"
+  }
+}

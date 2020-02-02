@@ -3,6 +3,7 @@
 *I haven't actually finished setting up the default components/theme yet!*
 
 ~~usage: `npx styled-system-izer` inside your existing react project root.~~
+
 usage (to test before I publish this to npm): download repsitory, run `npm i -g ./`, then `npx styled-system-izer` in project root.
 
 use flag `-y` or `--useyarn` to use `yarn add` for installation (default is `npm install`)

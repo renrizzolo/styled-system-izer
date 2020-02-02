@@ -5,12 +5,19 @@ const chalk = require("chalk");
 const program = require("commander");
 const inquirer = require("inquirer");
 
+// this package
 const packageJson = require("../package.json");
+
+// the package of the directory this script is called from
 const cwdPackageJson = require(path.join(process.cwd(), "package.json"));
 
+//default config
+const config = {
+  componentsDir: path.join(process.cwd(), "src", "UI"),
+  themeDir: path.join(process.cwd(), "src", "theme")
+};
+
 let packageManager = "npm";
-const defaultComponentsDir = path.join(process.cwd(), "src", "UI");
-const defaultThemeDir = path.join(process.cwd(), "src", "theme");
 
 const packages = [
   "styled-components",
@@ -24,22 +31,22 @@ const receiver = async () => {
       type: "input",
       name: "path",
       message: `Where do you want the UI components to be installed? 
-      \n (default is ${defaultComponentsDir}) 
+      \n (default is ${config.componentsDir}) 
       \n ${chalk.bgRed("WARNING")} any conflicting files will be overwritten!`
     }
   ]);
-  let dir = defaultComponentsDir;
+  let dir = config.componentsDir;
 
   if (prompt.path) {
     dir = prompt.path;
-    console.log(`
-      Using componenents path ${chalk.cyan(path.resolve(dir))}
-    `);
-  } else {
-    console.log(`
-      Using default componenets path ${chalk.cyan(defaultComponentsDir)}
-    `);
   }
+
+  console.log(
+    `Using ${prompt.path ? "" : "default "}componenents path ${chalk.cyan(
+      path.resolve(dir)
+    )}`
+  );
+
   try {
     await copyFiles(dir);
   } catch (error) {
@@ -52,21 +59,20 @@ const receiver = async () => {
       name: "themePath",
       message: `Where do you want the theme files to be installed? 
       ${chalk.bgRed("WARNING")} any conflicting files will be overwritten!
-      (default is ${defaultThemeDir})`
+      (default is ${config.themeDir})`
     }
   ]);
-  let themeDir = defaultThemeDir;
+  let themeDir = config.themeDir;
 
   if (themePrompt.themePath) {
     themeDir = themePrompt.themePath;
-    console.log(`
-      Using theme path ${chalk.cyan(path.resolve(themeDir))}
-    `);
-  } else {
-    console.log(`
-      Using default theme path ${chalk.cyan(defaultThemeDir)}
-    `);
   }
+  console.log(
+    `Using ${themePrompt.themePath ? "" : "default "}theme path ${chalk.cyan(
+      path.resolve(dir)
+    )}`
+  );
+
   try {
     await copyTheme(themeDir);
   } catch (error) {
@@ -118,6 +124,8 @@ const copyTheme = dir => {
     }
   });
 };
+
+// loop through
 const installPackages = async () => {
   return new Promise(async (resolve, reject) => {
     if (program.useyarn) {
@@ -137,6 +145,8 @@ const installPackages = async () => {
   });
 };
 
+// install a package with npm
+// or yarn when run with -y or --useyarn flag
 install = package => {
   return new Promise((resolve, reject) => {
     console.log(
